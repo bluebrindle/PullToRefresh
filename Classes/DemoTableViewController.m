@@ -9,13 +9,18 @@
 #import "DemoTableViewController.h"
 
 
+@interface DemoTableViewController ()  {
+    NSMutableArray *_items;
+}
+@end
+
 @implementation DemoTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     self.title = @"Pull to Refresh";
-    items = [[NSMutableArray alloc] initWithObjects:@"What time is it?", nil];
+    _items = [[NSMutableArray alloc] initWithObjects:@"What time is it?", nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -23,7 +28,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [items count];
+    return [_items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -31,10 +36,10 @@
     static NSString *CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
-    cell.textLabel.text = [items objectAtIndex:indexPath.row];
+    cell.textLabel.text = [_items objectAtIndex:indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
@@ -46,20 +51,16 @@
 
 - (void)addItem {
     // Add a new time
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
     NSString *now = [dateFormatter stringFromDate:[NSDate date]];
-    [items insertObject:[NSString stringWithFormat:@"%@", now] atIndex:0];
+    [_items insertObject:[NSString stringWithFormat:@"%@", now] atIndex:0];
 
     [self.tableView reloadData];
 
     [self stopLoading];
 }
 
-- (void)dealloc {
-    [items release];
-    [super dealloc];
-}
 
 @end
 

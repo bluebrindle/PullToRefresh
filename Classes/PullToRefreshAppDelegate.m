@@ -12,30 +12,23 @@
 
 @implementation PullToRefreshAppDelegate
 
-@synthesize window;
-@synthesize navigationController;
+@synthesize window=_window;
+@synthesize navigationController=_navigationController;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-	self.window = [[[UIWindow alloc] initWithFrame: screenBounds] autorelease];
+	self.window = [[UIWindow alloc] initWithFrame: screenBounds];
 
-    DemoTableViewController *demoTableViewController = [[[DemoTableViewController alloc] init] autorelease];
-    navigationController = [[UINavigationController alloc] initWithRootViewController:demoTableViewController];
+    DemoTableViewController *demoTableViewController = [[DemoTableViewController alloc] init];
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:demoTableViewController];
 
-    [window addSubview:navigationController.view];
-    [window makeKeyAndVisible];
+    [self.window addSubview:self.navigationController.view];
+    [self.window makeKeyAndVisible];
 
     return YES;
 }
-
-- (void)dealloc {
-	[navigationController release];
-	[window release];
-	[super dealloc];
-}
-
 
 @end
 
